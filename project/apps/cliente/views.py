@@ -24,18 +24,26 @@ def crear_clientes(request):
     p2 = Pais(nombre="México")
     p3 = Pais(nombre="El Salvador")
 
+    i1 = IdiomaPrincipal(idioma='Español')
+    i2 = IdiomaPrincipal(idioma='Inglés')
+    i3 = IdiomaPrincipal(idioma='Catalán')
+
+    i1.save()
+    i2.save()
+    i3.save()
+
     p1.save()
     p2.save()
     p3.save()
 
     c1 = Cliente(nombre="Almendra", apellido="Ruiseñor",
-                 nacimiento=date(2015, 1, 1), pais_origen_id=p1)
+                 nacimiento=date(2015, 1, 1), pais_origen_id=p1, idioma=i1)
     c2 = Cliente(nombre="Giordana", apellido="Tapello",
-                 nacimiento=date(2005, 2, 2), pais_origen_id=p2)
+                 nacimiento=date(2005, 2, 2), pais_origen_id=p2, idioma=i3)
     c3 = Cliente(nombre="Macarena", apellido="Lito",
-                 nacimiento=date(1990, 1, 1), pais_origen_id=p3)
+                 nacimiento=date(1990, 1, 1), pais_origen_id=p3, idioma=i1)
     c4 = Cliente(nombre="Jhiordana", apellido="Perez",
-                 nacimiento=date(2005, 1, 1), pais_origen_id=None)
+                 nacimiento=date(2005, 1, 1), pais_origen_id=None, idioma=i1)
 
     c1.save()
     c2.save()
@@ -57,15 +65,15 @@ def crear_cliente(request: HttpRequest) -> HttpResponse:
 
 
 def busqueda(request: HttpRequest) -> HttpResponse:
-    # Búsqueda por nombre que contenga "dana"
-    cliente_nombre = Cliente.objects.filter(nombre__contains="dana")
+    #Búsqueda por nombre
+    cliente_nombre = Cliente.objects.filter(nombre__contains="")
 
-    # Nacimientos  mayores a 2000
+    #Nacimientos  mayores a ...
     cliente_nacimiento = Cliente.objects.filter(
-        nacimiento__gt=date(2000, 1, 1))
+        nacimiento__gt=date(año, mes, dia))
 
-    # País de origen vacío
-    cliente_pais = Cliente.objects.filter(pais_origen_id=None)
+    #País de origen
+    cliente_pais = Cliente.objects.filter(pais_origen_id=Pais)
 
     contexto = {
         "clientes_nombre": cliente_nombre,
